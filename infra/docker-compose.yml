@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: kitabeat-db
+    environment:
+      POSTGRES_USER: kitabeat
+      POSTGRES_PASSWORD: kitabeat_pwd
+      POSTGRES_DB: kitabeat
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:

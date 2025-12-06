@@ -1,0 +1,1 @@
+-- Şimdilik boş, ileride başlangıç verileri ekleyebiliriz.
