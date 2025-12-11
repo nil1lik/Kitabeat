@@ -22,6 +22,32 @@ namespace Kitabeat.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Kitabeat.Domain.BookEmotions.BookEmotion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<double>("Score")
+                        .HasPrecision(5, 4)
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId", "Label")
+                        .IsUnique();
+
+                    b.ToTable("BookEmotions", (string)null);
+                });
+
             modelBuilder.Entity("Kitabeat.Domain.Books.Book", b =>
                 {
                     b.Property<Guid>("Id")
@@ -45,6 +71,22 @@ namespace Kitabeat.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books", (string)null);
+                });
+
+            modelBuilder.Entity("Kitabeat.Domain.BookEmotions.BookEmotion", b =>
+                {
+                    b.HasOne("Kitabeat.Domain.Books.Book", "Book")
+                        .WithMany("Emotions")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Kitabeat.Domain.Books.Book", b =>
+                {
+                    b.Navigation("Emotions");
                 });
 #pragma warning restore 612, 618
         }

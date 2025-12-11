@@ -1,97 +1,206 @@
-<div class="container py-4">
-  <header class="mb-4">
-    <h1 class="h3 mb-1">Kitabeat · Kitap Arama</h1>
-    <p class="text-muted mb-0">Kitabın adını veya yazarını yaz, biz de senin için bulalım. 📖</p>
-  </header>
+<div class="search-container">
+  <!-- Sol Panel: Başlık ve Arama -->
+  <aside class="left">
+    <div class="hero-section">
+      <div class="logo-wrapper">
+        <i class="pi pi-headphones logo-icon"></i>
+      </div>
+      <h1 class="title">Beat<span class="highlight">books</span></h1>
+      <p class="subtitle">
+        Kitabın adını veya yazarını yaz, biz de senin için bulalım. Üstelik kitabın ruh halini de
+        analiz edelim!
+      </p>
+    </div>
 
-  <!-- Search input -->
-  <div class="mb-3">
-    <input
-      type="text"
-      class="w-100"
-      fluid
-      placeholder="Örn: 1984, Suç ve Ceza, Sabahattin Ali..."
-      [formControl]="searchControl"
-    />
-  </div>
+    <div class="search-section">
+      <p-iconfield class="search-field">
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          type="text"
+          pInputText
+          placeholder="Örn: 1984, Suç ve Ceza, Sabahattin Ali..."
+          [formControl]="searchControl"
+          class="search-input"
+        />
+      </p-iconfield>
 
-  <!-- Error -->
-  @if(error) {
-  <div class="alert alert-danger py-2">
-    {{ error }}
-  </div>
-  }
-
-  <!-- İlk ekran (henüz arama yokken) -->
-  @if(!hasSearched && !loading && !error) {
-  <div class="text-center text-muted mt-5">
-    <p class="mb-1">Henüz arama yapmadın.</p>
-    <small class="d-block">
-      Hemen yukarıya bir kitap adı yazmayı dene. Örneğin: <strong>1984</strong> ya da
-      <strong>Harry Potter</strong>.
-    </small>
-  </div>
-  }
-
-  <!-- Loading skeleton -->
-  @if (loading) {
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mt-2">
-    <div class="col" *ngFor="let _ of skeletonItems">
-      <div class="card h-100 p-3">
-        <div class="placeholder-glow">
-          <div class="placeholder col-8 mb-2"></div>
-          <div class="placeholder col-5 mb-2"></div>
-          <div class="placeholder col-10 mb-1"></div>
-          <div class="placeholder col-9 mb-1"></div>
-          <div class="placeholder col-7 mb-1"></div>
+      <!-- Arama durumu -->
+      <div class="search-status">
+        @if (loading) {
+        <div class="status loading">
+          <p-progressSpinner strokeWidth="4" [style]="{ width: '20px', height: '20px' }" />
+          <span>Kitaplar aranıyor...</span>
         </div>
+        } @else if (!hasSearched) {
+        <div class="status hint">
+          <i class="pi pi-info-circle"></i>
+          <span>Aramaya başlamak için yukarıya yaz</span>
+        </div>
+        } @else if (books.length > 0) {
+        <div class="status success">
+          <i class="pi pi-check-circle"></i>
+          <span>{{ books.length }} kitap bulundu</span>
+        </div>
+        }
       </div>
     </div>
-  </div>
-  }
 
-  <!-- Boş sonuç -->
-  @if(!loading && hasSearched && books.length === 0 && !error) {
-  <div class="text-center mt-4">
-    <p class="mb-1">Sonuç bulunamadı. 😢</p>
-    <small class="text-muted">
-      Farklı bir arama deneyebilirsin ya da imla hatası olup olmadığına bakabilirsin.
-    </small>
-  </div>
-  }
-  <!-- Sonuç listesi -->
-  @if(!loading && books.length > 0) {
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mt-2">
-    <div class="col" *ngFor="let book of books">
-      <div class="card h-100 shadow-sm border-0">
-        <!-- Kapak placeholder -->
-        <div
-          class="bg-light d-flex align-items-center justify-content-center"
-          style="height: 160px"
-        >
-          <span class="text-muted small text-center px-2">
-            Kapak görseli henüz yok<br />
-            (ileride buraya gerçek kapak gelecek)
-          </span>
+    <!-- Hata mesajı -->
+    @if (error) {
+    <p-message severity="error" [text]="error" styleClass="error-message" />
+    }
+
+    <!-- İpuçları -->
+    <div class="tips-section">
+      <p-divider />
+      <h3 class="tips-title">
+        <i class="pi pi-lightbulb"></i>
+        Arama İpuçları
+      </h3>
+      <ul class="tips-list">
+        <li>
+          <i class="pi pi-angle-right"></i> Kitap adının tamamını veya bir kısmını yazabilirsin
+        </li>
+        <li><i class="pi pi-angle-right"></i> Yazar adıyla da arama yapabilirsin</li>
+        <li>
+          <i class="pi pi-angle-right"></i> "Mood Analiz Et" ile kitabın duygusal tonunu keşfet
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Sağ Panel: Sonuçlar -->
+  <main class="right">
+    <div class="results-header">
+      <h2>
+        <i class="pi pi-list"></i>
+        Sonuçlar
+      </h2>
+      @if (hasSearched && !loading && books.length > 0) {
+      <p-tag [value]="books.length + ' kitap'" severity="info" [rounded]="true" />
+      }
+    </div>
+
+    <p-divider />
+
+    <!-- İlk ekran -->
+    @if (!hasSearched && !loading && !error) {
+    <div class="empty-state">
+      <div class="empty-icon-wrapper">
+        <i class="pi pi-search empty-icon"></i>
+      </div>
+      <h3>Henüz arama yapmadın</h3>
+      <p>
+        Hemen yukarıya bir kitap adı yazmayı dene.<br />
+        Örneğin: <strong>1984</strong> ya da <strong>Harry Potter</strong>
+      </p>
+    </div>
+    }
+
+    <!-- Loading skeleton -->
+    @if (loading) {
+    <div class="results-grid">
+      @for (item of skeletonItems; track $index) {
+      <div class="skeleton-card">
+        <p-skeleton height="140px" styleClass="skeleton-cover" />
+        <div class="skeleton-content">
+          <p-skeleton width="80%" height="1.5rem" styleClass="mb-2" />
+          <p-skeleton width="50%" height="1rem" styleClass="mb-3" />
+          <p-skeleton width="100%" height="0.8rem" styleClass="mb-1" />
+          <p-skeleton width="90%" height="0.8rem" styleClass="mb-1" />
+          <p-skeleton width="70%" height="0.8rem" />
         </div>
+      </div>
+      }
+    </div>
+    }
 
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title mb-1">
+    <!-- Boş sonuç -->
+    @if (!loading && hasSearched && books.length === 0 && !error) {
+    <div class="empty-state">
+      <div class="empty-icon-wrapper sad">
+        <i class="pi pi-inbox empty-icon"></i>
+      </div>
+      <h3>Sonuç bulunamadı</h3>
+      <p>
+        Farklı bir arama deneyebilirsin ya da<br />
+        imla hatası olup olmadığına bakabilirsin.
+      </p>
+    </div>
+    }
+
+    <!-- Sonuç listesi -->
+    @if (!loading && books.length > 0) {
+    <div class="results-grid">
+      @for (book of books; track book.id) {
+      <p-card styleClass="book-card">
+        <!-- Kapak Alanı -->
+        <ng-template #header>
+          <div class="book-cover">
+            <div class="cover-placeholder">
+              <i class="pi pi-image"></i>
+              <span>Kapak görseli yakında</span>
+            </div>
+            @if (book.emotionLabel) {
+            <div class="emotion-badge">
+              <p-tag
+                [value]="book.emotionLabel"
+                [severity]="getEmotionSeverity(book.emotionLabel)"
+                [icon]="'pi ' + getEmotionIcon(book.emotionLabel)"
+                [rounded]="true"
+              />
+            </div>
+            }
+          </div>
+        </ng-template>
+
+        <!-- İçerik -->
+        <div class="book-content">
+          <h4 class="book-title" [pTooltip]="book.title" tooltipPosition="top">
             {{ book.title || 'Başlık yok' }}
-          </h5>
+          </h4>
 
-          @if(book.author) {
-          <p class="card-subtitle text-muted mb-2" *ngIf="book.author">
+          @if (book.author) {
+          <p class="book-author">
+            <i class="pi pi-user"></i>
             {{ book.author }}
           </p>
-          } @if(book.description) {
-          <p class="card-text small text-muted flex-grow-1" *ngIf="book.description">
+          } @if (book.description) {
+          <p class="book-description">
             {{ book.description }}
           </p>
           }
         </div>
-      </div>
+
+        <!-- Alt Kısım -->
+        <ng-template #footer>
+          <div class="book-footer">
+            @if (book.emotionLabel) {
+            <div class="emotion-info">
+              <span class="emotion-label">Mood Skoru:</span>
+              <div class="emotion-score-bar">
+                <div class="score-fill" [style.width.%]="(book.emotionScore || 0) * 100"></div>
+              </div>
+              <span class="emotion-value">
+                {{ (book.emotionScore || 0) * 100 | number : '1.0-0' }}%
+              </span>
+            </div>
+            } @else {
+            <p-button
+              label="Mood Analiz Et"
+              icon="pi pi-sparkles"
+              [loading]="analyzingBookId === book.id"
+              [outlined]="true"
+              size="small"
+              (click)="analyzeBook(book)"
+              styleClass="analyze-btn"
+            />
+            }
+          </div>
+        </ng-template>
+      </p-card>
+      }
     </div>
-  </div>
-  }
+    }
+  </main>
 </div>

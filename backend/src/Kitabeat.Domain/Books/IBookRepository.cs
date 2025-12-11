@@ -15,5 +15,5 @@ public interface IBookRepository
 
     Task AddRangeAsync(IEnumerable<Book> books, CancellationToken cancellationToken = default);
 
-    // İleride fazladan metotlar ekleyebilirsin (pagination vs.)
+    Task UpdateAsync(Book book, CancellationToken cancellationToken = default);
 }

@@ -1,108 +1,529 @@
+// Renk paletimiz
+$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+$dark-bg: #0f0f23;
+$card-bg: #1a1a2e;
+$card-hover: #252542;
+$text-primary: #ffffff;
+$text-secondary: #a0aec0;
+$accent: #667eea;
+
 .search-container {
-    min-height: 100vh;
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
-    gap: 2rem;
-  
-    @media (max-width: 900px) {
-      grid-template-columns: minmax(0, 1fr);
+  min-height: 100vh;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+  gap: 3rem;
+  background: $dark-bg;
+  background-image: radial-gradient(
+      ellipse at 10% 20%,
+      rgba(102, 126, 234, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse at 90% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%);
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+}
+
+// ==================== SOL PANEL ====================
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+
+  @media (max-width: 1024px) {
+    position: static;
+  }
+}
+
+.hero-section {
+  text-align: center;
+
+  .logo-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: $primary-gradient;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    animation: float 3s ease-in-out infinite;
+
+    .logo-icon {
+      font-size: 2.5rem;
+      color: white;
     }
   }
-  
-  .left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  
-    .title {
-      font-size: 2.4rem;
-      font-weight: 700;
-      margin: 0;
+
+  .title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+    color: $text-primary;
+    letter-spacing: -1px;
+
+    .highlight {
+      background: $primary-gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-  
-    .subtitle {
-      margin: 0;
-      color: #9ca3af;
-      max-width: 32rem;
-    }
-  
-    .search-box {
-      display: flex;
-      gap: 0.75rem;
-  
-      input {
-        flex: 1;
+  }
+
+  .subtitle {
+    color: $text-secondary;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.search-section {
+  .search-field {
+    width: 100%;
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      gap: 0.5rem;
+      font-size: 1rem;
+      border-radius: 16px;
+      background: $card-bg;
+      border: 2px solid transparent;
+      color: $text-primary;
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: $text-secondary;
+      }
+
+      &:focus {
+        border-color: $accent;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        outline: none;
       }
     }
-  
-    .status {
+  }
+}
+
+.search-status {
+  margin-top: 1rem;
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+
+    &.loading {
+      background: rgba(102, 126, 234, 0.1);
+      color: $accent;
+    }
+
+    &.hint {
+      background: rgba(160, 174, 192, 0.1);
+      color: $text-secondary;
+    }
+
+    &.success {
+      background: rgba(72, 187, 120, 0.1);
+      color: #48bb78;
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+.error-message {
+  border-radius: 12px;
+}
+
+.tips-section {
+  margin-top: 1rem;
+
+  .tips-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 1.5rem 0 1rem;
+
+    i {
+      color: #fbbf24;
+    }
+  }
+
+  .tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      color: $text-secondary;
+      font-size: 0.9rem;
+      line-height: 1.5;
+
+      i {
+        color: $accent;
+        margin-top: 0.15rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// ==================== SAĞ PANEL ====================
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+
+    i {
+      color: $accent;
+    }
+  }
+}
+
+// ==================== BOŞ DURUMLAR ====================
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  min-height: 400px;
+
+  .empty-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    animation: pulse 2s ease-in-out infinite;
+
+    &.sad {
+      background: rgba(245, 87, 108, 0.1);
+
+      .empty-icon {
+        color: #f5576c;
+      }
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      color: $accent;
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 0.75rem;
+  }
+
+  p {
+    color: $text-secondary;
+    line-height: 1.6;
+    margin: 0;
+
+    strong {
+      color: $accent;
+    }
+  }
+}
+
+// ==================== SONUÇ GRID ====================
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+// ==================== SKELETON KARTLAR ====================
+.skeleton-card {
+  background: $card-bg;
+  border-radius: 16px;
+  overflow: hidden;
+
+  .skeleton-cover {
+    border-radius: 0;
+  }
+
+  .skeleton-content {
+    padding: 1.25rem;
+  }
+}
+
+// ==================== KİTAP KARTLARI ====================
+:host ::ng-deep .book-card {
+  background: $card-bg;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+
+  .p-card-body {
+    padding: 0;
+  }
+
+  .p-card-content {
+    padding: 1.25rem;
+  }
+
+  .p-card-footer {
+    padding: 0 1.25rem 1.25rem;
+    border-top: none;
+  }
+}
+
+.book-cover {
+  position: relative;
+  height: 160px;
+  background: linear-gradient(135deg, $card-bg 0%, $card-hover 100%);
+
+  .cover-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+
+    i {
+      font-size: 2rem;
+      opacity: 0.5;
+    }
+
+    span {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+  }
+
+  .emotion-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
+.book-content {
+  .book-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .book-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: $text-secondary;
+    margin: 0 0 0.75rem;
+
+    i {
+      font-size: 0.8rem;
+      color: $accent;
+    }
+  }
+
+  .book-description {
+    font-size: 0.85rem;
+    color: $text-secondary;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.book-footer {
+  .emotion-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .emotion-label {
+      font-size: 0.8rem;
+      color: $text-secondary;
+      white-space: nowrap;
+    }
+
+    .emotion-score-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+
+      .score-fill {
+        height: 100%;
+        background: $primary-gradient;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+      }
+    }
+
+    .emotion-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: $accent;
+      min-width: 40px;
+      text-align: right;
+    }
+  }
+
+  .analyze-btn {
+    width: 100%;
+  }
+}
+
+// ==================== ANİMASYONLAR ====================
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+// ==================== PRİMENG ÖZELLEŞTİRMELERİ ====================
+:host ::ng-deep {
+  .p-divider {
+    margin: 0;
+
+    &::before {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .p-tag {
+    font-weight: 500;
+  }
+
+  .p-button.p-button-outlined {
+    border-color: $accent;
+    color: $accent;
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+      border-color: $accent;
+    }
+  }
+
+  .p-progressspinner-circle {
+    stroke: $accent;
+  }
+
+  .p-skeleton {
+    background: rgba(255, 255, 255, 0.05);
+
+    &::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    }
+  }
+
+  .p-message {
+    border-radius: 12px;
+  }
+
+  .p-inputtext {
+    background: $card-bg;
+    border: 2px solid transparent;
+    color: $text-primary;
+
+    &:enabled:focus {
+      border-color: $accent;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    }
+  }
+
+  // Search icon ortalama
+  .p-iconfield {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .p-inputicon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-secondary;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: #9ca3af;
-  
-      &.error {
-        color: #fecaca;
-      }
-  
-      &.empty {
-        color: #e5e7eb;
-      }
-  
-      .spinner {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
+      justify-content: center;
     }
   }
-  
-  .right {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-  
-      h2 {
-        margin: 0;
-      }
-  
-      span {
-        color: #9ca3af;
-        font-size: 0.9rem;
-      }
-    }
-  
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-  
-    .card-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-  
-      .book-title {
-        font-weight: 600;
-      }
-  
-      .book-author {
-        font-size: 0.9rem;
-        color: #9ca3af;
-      }
-    }
-  
-    .description {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #d1d5db;
-    }
-  }
-  
+}

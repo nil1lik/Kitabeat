@@ -6,6 +6,11 @@ obj/
 *.exe
 *.cache
 *.log
+*.nupkg
+.nuget/
+project.lock.json
+*.user
+*.rsuser
 
 # Python
 __pycache__/
@@ -15,12 +20,23 @@ __pycache__/
 env/
 venv/
 .venv/
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Node.js
+# Node.js / Angular
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.angular/
+dist/
+.npm/
+*.tsbuildinfo
 
 # IDE
 .vs/
@@ -30,13 +46,49 @@ yarn-error.log*
 *.userosscache
 *.sln.docstates
 .idea/
+*.sublime-*
 
 # OS
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Misc
 *.swp
 *.swo
 *~
+*.bak
+*.tmp
+*.temp
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.local.json
+appsettings.local.json
+appsettings.*.local.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Hugging Face / ML models cache
+.cache/
+models/
+*.h5
+*.pt
+*.onnx
